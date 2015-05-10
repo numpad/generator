@@ -78,11 +78,27 @@ Now if you run `./generate layers.js -h 20 -o layers.png`, a nice file called la
 
     ,,,,,,,,,,,,,,,,,,,,
     ####################
-    %%+%%++++%+%%+%%%++%
+    %%++%++++%+%%+%%%++%
     +%++%%%+%+%+%+%+%%%%
     XXXXXXXXXXXXXXXXXXXX
 
 From this point, you can create very complex generators which can generate hundreds of awesome maps in very little time!
 
 ## Performance
-Performance may vary drastically between different scripts and map dimensions. At this point, the map generator is not performing bad. Even though the Duktape engine is much slower than the V8 engine, it still performs good in nearly all cases. 
+Performance may vary drastically between different scripts and map dimensions. At this point, the map generator has pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms need to be interpreted. A goal for later versions is to support general algorithms with a native implementation to speed things up without losing control and flexibility.  
+An example for a (performance-wise) bad script is `generators/not_so_flatland.js`, it iterates over every block pretty often, uses the slow iterative floodfill algorithm with way to many, slow `contains(array, point)` calls.
+
+## Algorithms
+As said before, `generators/not_so_flatland.js` uses a very slow algorithm to return an array of points that are all connected to each other without any other blocks than air in between them. This iterative floodfill inspired algorithm will later be replaced with a more flexible, native implementation.  
+
+Algorithms that are very likely to become a native implementation:
+ - FloodFill
+ - FloodFill-List
+ - Neighbors
+ - FindAll-List
+ - FindAllOfType-List
+ - Fill / SetAll
+ - Raycast / Distance
+Suggestions are highly desired!
+
+
