@@ -99,6 +99,7 @@ Algorithms that are very likely to become a native implementation:
  - FindAllOfType-List
  - Fill / SetAll
  - Raycast / Distance
+
 Suggestions are highly desired!
 
 
