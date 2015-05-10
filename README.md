@@ -44,35 +44,37 @@ The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilanten
 - Height, how many blocks high the map is
 
 A simple script generating one layer of bedrock under two layers of a random stone type (normal or thick) under one layer of dirt covered with grass.
-    
-    // layers.js
 
-    /* Load default blocks */
-    load_file("base/blocks.js");
+```javascript
+// layers.js
+
+/* Load default blocks */
+load_file("base/blocks.js");
+
+/* Set stone block, 33% chance to be thick stone */
+function set_stone(x, y) {
+    if (Math.random() < 0.33)
+        set(x, y, blocks.stone_thick);
+    else
+        set(x, y, blocks.stone);
+}
+
+/* Iterate from 0..Width */
+for (var x = 0; x < Width; ++x) {
+    /* Set bedrock layer on the very bottom */
+    set(x, Height - 1, blocks.bedrock)
     
-    /* Set stone block, 33% chance to be thick stone */
-    function set_stone(x, y) {
-        if (Math.random() < 0.33)
-            set(x, y, blocks.stone_thick);
-        else
-            set(x, y, blocks.stone);
-    }
+    /* Two layers of random stone above it */
+    set_stone(x, Height - 2);
+    set_stone(x, Height - 3);
     
-    /* Iterate from 0..Width */
-    for (var x = 0; x < Width; ++x) {
-        /* Set bedrock layer on the very bottom */
-        set(x, Height - 1, blocks.bedrock)
-        
-        /* Two layers of random stone above it */
-        set_stone(x, Height - 2);
-        set_stone(x, Height - 3);
-        
-        /* A layer of dirt... */
-        set(x, Height - 4, blocks.dirt);
-        
-        /* ...covered with grass */
-        set(x, Height - 5, blocks.grass);
-    }
+    /* A layer of dirt... */
+    set(x, Height - 4, blocks.dirt);
+    
+    /* ...covered with grass */
+    set(x, Height - 5, blocks.grass);
+}
+```
 
 Now if you run `./generate layers.js -h 20 -o layers.png`, a nice file called layers.png will be created which looks like this: (As real image, not ascii)
 
