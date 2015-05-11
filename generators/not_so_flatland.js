@@ -211,7 +211,7 @@ for (var x = 0; x < Width; ++x) {
 	}
 }
 
-var grass_blocks = find_all(blocks.grass);
+var grass_blocks = findall(blocks.grass);
 for (var i = 0; i < grass_blocks.length; ++i) {
 	if (Math.random() < 0.25)
 		set(grass_blocks[i][0], grass_blocks[i][1], blocks.flower);

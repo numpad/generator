@@ -33,7 +33,7 @@ Additional arguments are:
  - `-o, --output <name>` to name the exported PNG
 If you, for example, created a generator script called "gen_mountains.js" and want a 140x70 sized map called "mymap.png", you would run `./generate gen_mountains.js -w 140 -h 70 -o mymap.png`.
 
-### Generating
+### 1. Generating
 The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilantengine and a few other functions and variables specialized for map generation.
  - get(x, y), which returns the ID of the block at x|y
  - set(x, y, id), which sets the ID of the block at x|y
@@ -88,22 +88,23 @@ Now if you run `./generate layers.js -h 20 -o layers.png`, a nice file called la
 
 From this point, you can create very complex generators which can generate hundreds of awesome maps in very little time!
 
-## Performance
-Performance may vary drastically between different scripts and map dimensions. At this point, the map generator has pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms need to be interpreted. A goal for later versions is to support general algorithms with a native implementation to speed things up without losing control and flexibility.  
-An example for a (performance-wise) bad script is `generators/not_so_flatland.js`, it iterates over every block pretty often, uses the slow iterative floodfill algorithm with way to many, slow `contains(array, point)` calls.
-
-## Algorithms
+### 2. Algorithms
 As said before, `generators/not_so_flatland.js` uses a very slow algorithm to return an array of points that are all connected to each other without any other blocks than air in between them. This iterative floodfill inspired algorithm will later be replaced with a more flexible, native implementation.  
 
 Algorithms that are very likely to become a native implementation:
- - FloodFill
- - FloodFill-List
- - Neighbors
- - FindAll-List
- - FindAllOfType-List
- - Fill / SetAll
- - Raycast / Distance
+ [ ] FloodFill
+ [ ] FloodFill-List
+ [ ] Neighbors
+ [ ] Fill / SetAll
+ [ ] Raycast / Distance
+ [X] FindAll-List
 
 Suggestions are highly desired!
 
+#### 2.1 FindAll
+FindAll is an algorithm that accepts one argument `block_id` and returns a list of coordinates where this block is found. It searches the entire map. The return type is an array filled with subarrays representing coordinates e.g. `[[1, 1], [3, 7], [4, 9]]`. This result means there are 3 blocks with the same ID as argument `block_id` found, the first one on point (1|1), the second one on point (3|7) and the last one on (4|9).
+
+### 3. Performance
+Performance may vary drastically between different scripts and map dimensions. At this point, the map generator has pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms need to be interpreted. A goal for later versions is to support general algorithms with a native implementation to speed things up without losing control and flexibility.  
+An example for a (performance-wise) bad script is `generators/not_so_flatland.js`, it iterates over every block pretty often, uses the slow iterative floodfill algorithm with way to many, slow `contains(array, point)` calls.
 
