@@ -7,7 +7,7 @@
 /* uncomment this line to enable the unsafe, deprecated use of the 'gets' function. This will add the function 'prompt' to the js environment */
 //#define USE_PROMPT
 
-#define VERSION "1.0"
+#define VERSION "0.5"
 
 /* how to save a block-type */
 struct color {
