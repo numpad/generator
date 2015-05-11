@@ -292,6 +292,17 @@ int js_algo_fill(duk_context *ctx) {
 	return 0;
 }
 
+int js_algo_neighbors_of(duk_context *ctx) {
+	const int xp = duk_get_int(ctx, 0);
+	const int yp = duk_get_int(ctx, 1);
+	const int id = duk_get_int(ctx, 2);
+
+	const int n = algo_neighbors_of(js_level, js_level_width, js_level_height, xp, yp, id);
+	duk_push_int(ctx, n);
+
+	return 1;
+}
+
 int main(int argc, char *argv[]) {
 	/* initialize js environment */
 	duk_context *ctx = duk_create_heap_default();
@@ -324,6 +335,9 @@ int main(int argc, char *argv[]) {
 	/* 'findall' */
 	duk_push_c_function(ctx, js_algo_findall, 1);
 	duk_put_prop_string(ctx, -2, "findall");
+	/* 'neighbors_of' */
+	duk_push_c_function(ctx, js_algo_neighbors_of, 3);
+	duk_put_prop_string(ctx, -2, "neighbors_of");
 	/* pop global object */
 	duk_pop(ctx);
 

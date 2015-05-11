@@ -64,6 +64,25 @@ struct point* algo_findall(int *js_level, const int w, const int h, const int id
 	return root;
 }
 
+/* how many neighbors of type 'id' are near xp|yp */
+int algo_neighbors_of(int *js_level, const int w, const int h, const int xp, const int yp, const int id) {
+	int counter = 0;
+	
+	/* check every 8 blocks touching xp|yp */
+	for (int y = yp - 1; y < yp + 2; ++y) {
+		for (int x = xp - 1; x < xp + 2; ++x) {
+			/* irgnore out of map and self */
+			if (x < 0 || y < 0 || x >= w || y >= h || (x - xp == 0 && y - yp == 0))
+				continue;
+			
+			if (js_level[x + y * w] == id)
+				++counter;
+		}
+	}
+	printf("Count: %d\n", counter);
+	return counter;
+}
+
 /* pushes an array of points on the js stack */
 int algo_push_point_array(duk_context *ctx, struct point *points) {
 	/* create array of positions*/

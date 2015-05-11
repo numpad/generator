@@ -96,8 +96,10 @@ Algorithms that are very likely to become a native implementation:
  - [ ] FloodFill-List
  - [ ] Neighbors
  - [ ] Raycast / Distance
+ - [ ] Regions
  - [X] Fill
  - [X] FindAll
+ - [X] NeighborsOf
 
 Suggestions are highly desired!
 
@@ -106,6 +108,9 @@ Suggestions are highly desired!
 
 #### 2.2 Fill
 `fill(block_id)` simply sets every block on the map to `block_id`. This is useful when starting the generation to set every block to air.
+
+#### 2.3 NeighborsOf
+`neighbors_of(x, y, id)` counts how many blocks of type `id` are touching the block at `(x|y)` and returns the result. To count how many blocks any type _but_ `id` are neighbors, one would calculate `8 - neighbors_of(x, y, id)`.
 
 ### 3. Performance
 Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty average performance, however more complex scripts are often slowing the process down quite much since all algorithms need to be interpreted by the Javascript engine. A goal for later versions is to support general algorithms with a native implementation to speed things up without losing control and flexibility.  
