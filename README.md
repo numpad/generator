@@ -92,12 +92,12 @@ From this point, you can create very complex generators which can generate hundr
 As said before, `generators/not_so_flatland.js` uses a very slow algorithm to return an array of points that are all connected to each other without any other blocks than air in between them. This iterative floodfill inspired algorithm will later be replaced with a more flexible, native implementation.  
 
 Algorithms that are very likely to become a native implementation:
- [ ] FloodFill
- [ ] FloodFill-List
- [ ] Neighbors
- [ ] Fill / SetAll
- [ ] Raycast / Distance
- [X] FindAll-List
+ - [ ] FloodFill
+ - [ ] FloodFill-List
+ - [ ] Neighbors
+ - [ ] Fill / SetAll
+ - [ ] Raycast / Distance
+ - [X] FindAll-List
 
 Suggestions are highly desired!
 
