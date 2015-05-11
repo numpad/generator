@@ -39,19 +39,21 @@ void point_append(struct point *p, const int x, const int y) {
 
 /* Sets every block to 'id' */
 void algo_fill(int *js_level, const int w, const int h, const int id) {
-	/* TODO: memset converts int id to unsigned char -> max 255 blocks */
-	memset(js_level, id, w * h);
+	for (int i = 0; i < w * h; ++i) {
+		js_level[i] = id;
+	}
 }
 
 /* Find All of Type */
 struct point* algo_findall(int *js_level, const int w, const int h, const int id) {
 	struct point *root = NULL;
-
+	
+	/* for every block on the map */
 	for (int y = 0; y < h; ++y) {
 		for (int x = 0; x < w; ++x) {
 			/* Check findall condition */
 			if (js_level[x + y * w] == id) {
-				if (root == NULL)
+				if (root == NULL) /* first element */
 					root = point_new(x, y);
 				else
 					point_append(root, x, y);
@@ -60,6 +62,36 @@ struct point* algo_findall(int *js_level, const int w, const int h, const int id
 	}
 	
 	return root;
+}
+
+/* pushes an array of points on the js stack */
+int algo_push_point_array(duk_context *ctx, struct point *points) {
+	/* create array of positions*/
+	duk_idx_t arr_idx = duk_push_array(ctx);
+	/* count how many points we have */
+	int idx_counter = 0;
+	
+	/* create a sub array for every point -> [x, y], then append it to the main point array */
+	struct point *it = points;
+	while (it != NULL) {
+		/* create subarray for x,y */
+		duk_idx_t subarr_idx = duk_push_array(ctx);
+		/* push x coordinate to index 0 */
+		duk_push_int(ctx, it->x);
+		duk_put_prop_index(ctx, subarr_idx, 0);
+		/* y to index 1 */
+		duk_push_int(ctx, it->y);
+		duk_put_prop_index(ctx, subarr_idx, 1);
+		
+		/* and append the element to the main array */
+		duk_put_prop_index(ctx, arr_idx, idx_counter);
+		
+		/* increase counter and go to next element */
+		++idx_counter;
+		it = it->next;
+	}
+	
+	return idx_counter;
 }
 
 #endif

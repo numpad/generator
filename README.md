@@ -95,14 +95,17 @@ Algorithms that are very likely to become a native implementation:
  - [ ] FloodFill
  - [ ] FloodFill-List
  - [ ] Neighbors
- - [ ] Fill / SetAll
  - [ ] Raycast / Distance
- - [X] FindAll-List
+ - [X] Fill
+ - [X] FindAll
 
 Suggestions are highly desired!
 
 #### 2.1 FindAll
-FindAll is an algorithm that accepts one argument `block_id` and returns a list of coordinates where this block is found. It searches the entire map. The return type is an array filled with subarrays representing coordinates e.g. `[[1, 1], [3, 7], [4, 9]]`. This result means there are 3 blocks with the same ID as argument `block_id` found, the first one on point (1|1), the second one on point (3|7) and the last one on (4|9).
+`findall(block_id)` is an algorithm that accepts one argument `block_id` and returns a list of coordinates where this block is found. It searches the entire map. The return type is an array filled with subarrays representing coordinates e.g. `[[1, 1], [3, 7], [4, 9]]`. This result means there are 3 blocks with the same ID as argument `block_id` found, the first one on point (1|1), the second one on point (3|7) and the last one on (4|9).
+
+#### 2.2 Fill
+`fill(block_id)` simply sets every block on the map to `block_id`. This is useful when starting the generation to set every block to air.
 
 ### 3. Performance
 Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty average performance, however more complex scripts are often slowing the process down quite much since all algorithms need to be interpreted by the Javascript engine. A goal for later versions is to support general algorithms with a native implementation to speed things up without losing control and flexibility.  

@@ -278,28 +278,18 @@ int js_algo_findall(duk_context *ctx) {
 	/* finds all blocks of id */
 	struct point *result = algo_findall(js_level, js_level_width, js_level_height, search_id);
 	
-	/* create array of positions*/
-	duk_idx_t arr_idx = duk_push_array(ctx);
-	int idx_counter = 0;
-
-	struct point *it = result;
-	while (it != NULL) {
-		/* create subarray for x,y */
-		duk_idx_t subarr_idx = duk_push_array(ctx);
-		duk_push_int(ctx, it->x);
-		duk_put_prop_index(ctx, subarr_idx, 0);
-		duk_push_int(ctx, it->y);
-		duk_put_prop_index(ctx, subarr_idx, 1);
-		
-		duk_put_prop_index(ctx, arr_idx, idx_counter);
-	
-		//duk_pop(ctx);
-		
-		++idx_counter;
-		it = it->next;
-	}
+	/* pushes points 'result' as array on the js stack --> [[x, y], [x2, y2], ...] */
+	algo_push_point_array(ctx, result);
 
 	return 1;
+}
+
+int js_algo_fill(duk_context *ctx) {
+	const int fill_id = duk_to_int(ctx, 0);
+	
+	algo_fill(js_level, js_level_width, js_level_height, fill_id);
+
+	return 0;
 }
 
 int main(int argc, char *argv[]) {
@@ -322,13 +312,16 @@ int main(int argc, char *argv[]) {
 	/* 'set' */
 	duk_push_c_function(ctx, js_level_set, 3);
 	duk_put_prop_string(ctx, -2, "set");
-	/* 'register_block' */
+	/* 'register' */
 	duk_push_c_function(ctx, js_register_block, 3);
 	duk_put_prop_string(ctx, -2, "register");
 	/* 'load_file' */
 	duk_push_c_function(ctx, js_load_file, 1);
 	duk_put_prop_string(ctx, -2, "load_file");
-	/* 'algo_findall' */
+	/* 'fill' */
+	duk_push_c_function(ctx, js_algo_fill, 1);
+	duk_put_prop_string(ctx, -2, "fill");
+	/* 'findall' */
 	duk_push_c_function(ctx, js_algo_findall, 1);
 	duk_put_prop_string(ctx, -2, "findall");
 	/* pop global object */
