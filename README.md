@@ -43,6 +43,8 @@ The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilanten
 - Width, how many blocks wide the map is
 - Height, how many blocks high the map is
 
+**Note**: `Width` and `Height` are both variables in the Javascript environment, that means they can be read _and_ written. However, it is **highly discouraged** to change these variables as they will not be changed in the native environment! The result may be that too much or, even worse, not enough memory will be allocated, that the PNG encoder produces corrupt or faulty images or that your toaster turns evil and slowly murders every member of your family...
+
 A simple script generating one layer of bedrock under two layers of a random stone type (normal or thick) under one layer of dirt covered with grass.
 
 ```javascript

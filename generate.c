@@ -3,6 +3,7 @@
 #include <string.h>
 #include "lib/duktape.h"
 #include "lib/lodepng.h"
+#include "algorithm.h"
 
 /* uncomment this line to enable the unsafe, deprecated use of the 'gets' function. This will add the function 'prompt' to the js environment */
 //#define USE_PROMPT
@@ -14,6 +15,17 @@ struct color {
 	unsigned char r, g, b;
 };
 
+/* store all block-ids in here -> the level*/ 
+int *js_level;
+/* store all blocks here (colors on png when exported) */
+struct color *blocks;
+/* How many blocks are stored, how much space is allocated for them */
+int blocks_len = 0,
+	blocks_max_len = 90;
+
+/* default level dimensions, may be overwritten by command line args */
+int js_level_width  = 50,
+	js_level_height = 30;
 /* prints how to use the program */
 void print_usage(const char *arg0) {
 	puts("Usage:");
@@ -147,17 +159,6 @@ const struct color color_new(const int r, const int g, const int b) {
 	return new_color;
 }
 
-/* store all block-ids in here -> the level*/ 
-int *js_level;
-/* store all blocks here (colors on png when exported) */
-struct color *blocks;
-/* How many blocks are stored, how much space is allocated for them */
-int blocks_len = 0,
-	blocks_max_len = 90;
-
-/* default level dimensions, may be overwritten by command line args */
-int js_level_width  = 50,
-	js_level_height = 30;
 
 /* register a block for global blocks */
 void register_block(const int r, const int g, const int b) {
@@ -269,6 +270,38 @@ void export_level(char *filename) {
 	free(image);
 }
 
+/* Find all occurences of block type and return their positions */
+int js_algo_findall(duk_context *ctx) {
+	/* block id */
+	const int search_id = duk_to_int(ctx, 0);
+
+	/* finds all blocks of id */
+	struct point *result = algo_findall(js_level, js_level_width, js_level_height, search_id);
+	
+	/* create array of positions*/
+	duk_idx_t arr_idx = duk_push_array(ctx);
+	int idx_counter = 0;
+
+	struct point *it = result;
+	while (it != NULL) {
+		/* create subarray for x,y */
+		duk_idx_t subarr_idx = duk_push_array(ctx);
+		duk_push_int(ctx, it->x);
+		duk_put_prop_index(ctx, subarr_idx, 0);
+		duk_push_int(ctx, it->y);
+		duk_put_prop_index(ctx, subarr_idx, 1);
+		
+		duk_put_prop_index(ctx, arr_idx, idx_counter);
+	
+		//duk_pop(ctx);
+		
+		++idx_counter;
+		it = it->next;
+	}
+
+	return 1;
+}
+
 int main(int argc, char *argv[]) {
 	/* initialize js environment */
 	duk_context *ctx = duk_create_heap_default();
@@ -295,6 +328,9 @@ int main(int argc, char *argv[]) {
 	/* 'load_file' */
 	duk_push_c_function(ctx, js_load_file, 1);
 	duk_put_prop_string(ctx, -2, "load_file");
+	/* 'algo_findall' */
+	duk_push_c_function(ctx, js_algo_findall, 1);
+	duk_put_prop_string(ctx, -2, "findall");
 	/* pop global object */
 	duk_pop(ctx);
 
