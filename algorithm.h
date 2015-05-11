@@ -79,7 +79,6 @@ int algo_neighbors_of(int *js_level, const int w, const int h, const int xp, con
 				++counter;
 		}
 	}
-	printf("Count: %d\n", counter);
 	return counter;
 }
 
