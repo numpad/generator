@@ -15,15 +15,6 @@ load_file('base/blocks.js');
  * Utility functions
  */
 
-/* fills the whole map with 'tile' */
-function fill(tile) {
-	for (var y = 0; y < Height; ++y) {
-		for (var x = 0; x < Width; ++x) {
-			set(x, y, tile);
-		}
-	}
-}
-
 /* how many neighbors of type 'neighbor_type' are around me */
 function neighbors_of(x, y, neighbor_type) {
 	var counter = 0;
@@ -113,18 +104,6 @@ function flood_find(x, y) {
 		}
 	}
 
-	return res;
-}
-
-/* find every occurence of blocktype */
-function find_all(blocktype) {
-	var res = [];
-	for (var y = 0; y < Height; ++y) {
-		for (var x = 0; x < Width; ++x) {
-			if (get(x, y) == blocktype)
-				res.push([x, y]);
-		}
-	}
 	return res;
 }
 
