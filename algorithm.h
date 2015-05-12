@@ -109,6 +109,8 @@ int algo_push_point_array(duk_context *ctx, struct point *points) {
 		it = it->next;
 	}
 	
+	point_delete(points);
+
 	return idx_counter;
 }
 
