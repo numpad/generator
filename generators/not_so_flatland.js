@@ -15,28 +15,6 @@ load_file('base/blocks.js');
  * Utility functions
  */
 
-/* how many neighbors of type 'neighbor_type' are around me */
-function neighbors_of(x, y, neighbor_type) {
-	var counter = 0;
-	for (var yp = -1; yp < 2; ++yp) {
-		for (var xp = -1; xp < 2; ++xp) {
-			/* block 0|0 (relative) is never a neighbor */
-			if (xp == 0 && yp == 0)
-				continue;
-			
-			/* bounds check */
-			if (x + xp < 0 || y + yp < 0 || x + xp > Width || y + yp > Height) {
-				continue;
-			}
-
-			if (get(x + xp, y + yp) == neighbor_type)
-				++counter;
-		}
-	}
-	return counter;
-	
-}
-
 /* how many non-air blocks are around me in a 3x3 field */
 function neighbors(x, y) {
 	var counter = 0;
