@@ -17,23 +17,7 @@ load_file('base/blocks.js');
 
 /* how many non-air blocks are around me in a 3x3 field */
 function neighbors(x, y) {
-	var counter = 0;
-	for (var yp = -1; yp < 2; ++yp) {
-		for (var xp = -1; xp < 2; ++xp) {
-			/* dont check self */
-			if (xp == 0 && yp == 0)
-				continue;
-			
-			/* bounds check */
-			if (x + xp < 0 || y + yp < 0 || x + xp > Width || y + yp > Height) {
-				continue;
-			}
-			
-			if (get(x + xp, y + yp) != blocks.air)
-				++counter;
-		}
-	}
-	return counter;
+	return 8 - neighbors_of(x, y, blocks.air);
 }
 
 /* sets block x|y to stone. chance is in range 0..1 */
