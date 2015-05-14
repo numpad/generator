@@ -35,13 +35,16 @@ If you, for example, created a generator script called "gen_mountains.js" and wa
 
 ### 1. Generating
 The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilantengine and a few other functions and variables specialized for map generation.
- - get(x, y), which returns the ID of the block at x|y
- - set(x, y, id), which sets the ID of the block at x|y
- - read(filename), which returns the content of a file "filename"
- - load_file(file), which loads another Javascript file
- - register(r, g, b), which registers a block to be used and exported as RGB. Returns an ID for block (r, g, b)
-- Width, how many blocks wide the map is
-- Height, how many blocks high the map is
+ - `get(x, y)`, which returns the ID of the block at x|y
+ - `set(x, y, id)`, which sets the ID of the block at x|y
+ - `read(filename)`, which returns the content of a file "filename"
+ - `load_file(file)`, which loads another Javascript file
+ - `register(r, g, b)`, which registers a block to be used and exported as RGB. Returns an ID for block (r, g, b)
+ - `fill(id)`, which fills the whole map with `id`
+ - `findall(id)`, which returns an array filled with the coordinates of every block of type `id`
+ - `neighbors_of(x, y, id)`, which returns how many neighbors of type `id` are touching block (x, y)
+ - `Width`, how many blocks wide the map is
+ - `Height`, how many blocks high the map is
 
 **Note**: `Width` and `Height` are both variables in the Javascript environment, that means they can be read _and_ written. However, it is **highly discouraged** to change these variables as they will not be changed in the native environment! The result may be that too much or, even worse, not enough memory will be allocated, that the PNG encoder produces corrupt or faulty images or that your toaster turns evil and slowly murders every member of your family...
 
@@ -113,6 +116,6 @@ Suggestions are highly desired!
 `neighbors_of(x, y, id)` counts how many blocks of type `id` are touching the block at `(x|y)` and returns the result. To count how many blocks any type _but_ `id` are neighbors, one would calculate `8 - neighbors_of(x, y, id)`.
 
 ### 3. Performance
-Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty average performance, however more complex scripts are often slowing the process down quite much since all algorithms need to be interpreted by the Javascript engine. A goal for later versions is to support general algorithms with a native implementation to speed things up without losing control and flexibility.  
+Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms (obviously excluding the native ones) need to be interpreted by the Javascript engine. A goal for later versions is to support as many general algorithms with a native implementation as possible to speed things up without losing control and flexibility.  
 An example for a (performance-wise) bad script is `generators/not_so_flatland.js`, it iterates over every block pretty often, uses the slow iterative floodfill algorithm with way to many, slow `contains(array, point)` calls.
 
