@@ -222,6 +222,7 @@ if (houses.length == 0) {
 }
 
 /* render the map */
+/*
 for (var y = 0; y < Height; ++y) {
 	var line = "";
 	for (var x = 0; x < Width; ++x) {
@@ -308,3 +309,5 @@ for (var y = 0; y < Height; ++y) {
 	}
 	print(line);
 }
+*/
+
