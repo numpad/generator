@@ -1,6 +1,6 @@
 
 /*
- * This example requires compilation
+ * This example requires compilation with the "USE_PROMPT" definition
  */
 
 /* Asks for a filename */
