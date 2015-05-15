@@ -31,7 +31,8 @@ Additional arguments are:
  - `-w, --width <int>` to specify the map-width
  - `-h, --height <int>` to specify the map-height
  - `-o, --output <name>` to name the exported PNG
-If you, for example, created a generator script called "gen_mountains.js" and want a 140x70 sized map called "mymap.png", you would run `./generate gen_mountains.js -w 140 -h 70 -o mymap.png`.
+ - `-c, --count <int>` to generate multiple maps
+If you, for example, created a generator script called "gen_mountains.js" and want two 140x70 sized maps called "mymap", you would run `./generate gen_mountains.js -w 140 -h 70 -o mymap -c 2`. Now you have two PNG files `mymap_0.png` and `mymap_1.png` which can be used in King Arthur's Gold.
 
 ### 1. Generating
 The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilantengine and a few other functions and variables specialized for map generation.

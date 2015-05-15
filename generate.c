@@ -8,7 +8,7 @@
 /* uncomment this line to enable the unsafe, deprecated use of the 'gets' function. This will add the function 'prompt' to the js environment */
 //#define USE_PROMPT
 
-#define VERSION "0.5"
+#define VERSION "0.9"
 
 /* how to save a block-type */
 struct color {
@@ -24,8 +24,8 @@ int blocks_len = 0,
 	blocks_max_len = 90;
 
 /* default level dimensions, may be overwritten by command line args */
-int js_level_width  = 50,
-	js_level_height = 30;
+int js_level_width  = 120,
+	js_level_height = 70;
 /* prints how to use the program */
 void print_usage(const char *arg0) {
 	puts("Usage:");
@@ -34,22 +34,14 @@ void print_usage(const char *arg0) {
 	puts(" --   Flags   --");
 	puts("  -w, --width  <int>  : Set level width");
 	puts("  -h, --height <int>  : Set level height");
+	puts("  -c, --count <int>   : How many maps to generate");
 	puts("  -o, --output <file> : Export image named <file>");
 	puts("");
 	puts(" -- Functions --");
 	puts("  This map generator uses the Duktape (duktape.org)");
 	puts("  Javascript engine which follows the EcmaScript 5/");
 	puts("  5.1 specification.");
-	puts("  Additional, native functions are:");
-	puts("");
-	puts("  get(x, y)         : Returns the BlockID at position x|y");
-	puts("  read(name)        : Returns the contents of file 'name'");
-#ifdef USE_PROMPT
-	puts("  prompt(msg)       : Asks for user input  and returns it");
-#endif
-	puts("  set(x, y, id)     : Sets the Blocks' ID at position x|y");
-	puts("  load_file(file)   : Load and evaluate a Javascript file");
-	puts("  register(r, g, b) : Register a Block and return it's ID");
+	puts("  Additional functions are listed in README.md");
 	puts("");
 	puts("Version:");
 	puts("  v" VERSION);
@@ -402,8 +394,9 @@ int main(int argc, char *argv[]) {
 		duk_gc(ctx, 0);
 		
 		/* where to save the png */
-		char *export_file = "generated_map.png";
-		
+		char *export_file = "generated_map";
+		int generate_num = 1;
+
 		/* parse command line flags */
 		for (int i = 0; i < argc; ++i) {
 			if (!strcmp(argv[i], "--width") || !strcmp(argv[i], "-w")) {
@@ -415,6 +408,9 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(argv[i], "-o") || !strcmp(argv[i], "--output")) {
 				if (i + 1 < argc)
 					export_file = argv[i + 1];
+			} else if (!strcmp(argv[i], "-c") || !strcmp(argv[i], "--count")) {
+				if (i + 1 < argc)
+					generate_num = atoi(argv[i + 1]);
 			}
 		}
 		
@@ -430,14 +426,24 @@ int main(int argc, char *argv[]) {
 		duk_put_global_string(ctx, "Width");
 		duk_push_int(ctx, js_level_height);
 		duk_put_global_string(ctx, "Height");
-
-		if (duk_peval_file(ctx, argv[1]) != 0) {
-			printf("('%s') %s\n", argv[1], duk_safe_to_string(ctx, -1));
-		}
-		duk_pop(ctx);
 		
-		/* export the level as png */
-		export_level(export_file);
+		/* can generate multiple maps */
+		for (int i = 0; i < generate_num; ++i) {
+			if (duk_peval_file(ctx, argv[1]) != 0) {
+				printf("('%s' #%d) %s\n", argv[1], i, duk_safe_to_string(ctx, -1));
+			}
+			duk_pop(ctx);
+			
+			/* export the level with a special name */
+			char export_file_num[256];
+			if (generate_num > 1) {
+				sprintf(export_file_num, "%s_%d.png", export_file, i);
+			} else {
+				sprintf(export_file_num, "%s.png", export_file);
+			}
+			/* export the level as png */
+			export_level(export_file_num);
+		}
 
 		/* free all memory */ 
 		free(js_level);
