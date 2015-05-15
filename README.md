@@ -13,12 +13,25 @@ Copyright (c) 2015 Christian Schäl
 ## License
 See LICENSE.md
 
-## Building
-To build the map generator from source you will only need a compiler
-which supports C99. In development gcc 4.9.2 was used but other compilers
-should work as well.  
-Run `make` to build a binary for your current system. To change the build
-process edit the `Makefile`.
+## Installation
+Currently there are no binaries available, to use the Map Generator you will have to build it from source. This requires you to have a C compiler supporting C99. In development gcc 4.9.2 was used but every other compiler should work as well.  
+
+Building on Linux:
+ 1. `git clone https://github.com/numpad/generator.git`
+ 2. `cd generator`
+ 3. `make`
+
+Building on Mac OSX:
+ 1. `git clone https://github.com/numpad/generator.git`
+ 2. `cd generator`
+ 3. `make CC=clang`
+
+Building on Windows:
+ 1. [Download and Install MinGW](http://www.mingw.org/) or any C compiler
+ 3. Add MinGW to your PATH if necessary
+ 4. [Download the repo as zip](https://github.com/numpad/generator/archive/master.zip)
+ 5. `cd generator-master`
+ 6. `make`
 
 ## Documentation
 Plain map generation is very simple using the map generator, you will
