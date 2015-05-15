@@ -303,6 +303,51 @@ int js_algo_neighbors_of(duk_context *ctx) {
 	return 1;
 }
 
+/* casts a ray in a direction and returns a point where it collides */
+int js_algo_raycast(duk_context *ctx) {
+	/* get x, y, dir */
+	const int x = duk_to_int(ctx, 0);
+	const int y = duk_to_int(ctx, 1);
+	const int dir = duk_to_int(ctx, 2);
+	/* how many ignored blocks */
+	duk_get_prop_string(ctx, 3, "length");
+	const int ids_len = duk_get_int(ctx, -1);
+	/* allocate memory for ignored blocks */
+	int *ids = malloc(sizeof(int) * ids_len);
+	/* get all ids to be ignored */
+	for (int i = 0; i < ids_len; ++i) {
+		duk_get_prop_index(ctx, 3, i);
+		ids[i] = duk_get_int(ctx, -1);
+		duk_pop(ctx);
+	}
+	
+	/* calculate distance in dir */
+	const int distance = algo_distance(js_level, js_level_width,
+								js_level_height,  x, y, dir, ids, ids_len);
+	/* no longer need ignored_ids */
+	free(ids);
+	
+	/* return position in array */
+	const int arr_idx = duk_push_array(ctx);
+	if (dir == 1)
+		duk_push_int(ctx, x + distance);
+	else if (dir == -1)
+		duk_push_int(ctx, x - distance);
+	else
+		duk_push_int(ctx, x);	
+	duk_put_prop_index(ctx, arr_idx, 0);
+
+	if (dir == -2)
+		duk_push_int(ctx, y - distance);
+	else if (dir == 2)
+		duk_push_int(ctx, y + distance);
+	else
+		duk_push_int(ctx, y);	
+	duk_put_prop_index(ctx, arr_idx, 1);
+	
+	return 1;
+}
+
 int main(int argc, char *argv[]) {
 	/* initialize js environment */
 	duk_context *ctx = duk_create_heap_default();
@@ -338,6 +383,9 @@ int main(int argc, char *argv[]) {
 	/* 'neighbors_of' */
 	duk_push_c_function(ctx, js_algo_neighbors_of, 3);
 	duk_put_prop_string(ctx, -2, "neighbors_of");
+	/* 'distance' */
+	duk_push_c_function(ctx, js_algo_raycast, 4);
+	duk_put_prop_string(ctx, -2, "raycast");
 	/* pop global object */
 	duk_pop(ctx);
 

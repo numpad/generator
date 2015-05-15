@@ -43,6 +43,7 @@ The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilanten
  - `fill(id)`, which fills the whole map with `id`
  - `findall(id)`, which returns an array filled with the coordinates of every block of type `id`
  - `neighbors_of(x, y, id)`, which returns how many neighbors of type `id` are touching block (x, y)
+ - `raycast(x, y, dir, ignored`, which returns the position of the block the ray collides with
  - `Width`, how many blocks wide the map is
  - `Height`, how many blocks high the map is
 
@@ -98,8 +99,8 @@ Algorithms that are very likely to become a native implementation:
  - [ ] FloodFill
  - [ ] FloodFill-List
  - [ ] Neighbors
- - [ ] Raycast / Distance
  - [ ] Regions
+ - [X] Raycast / Distance
  - [X] Fill
  - [X] FindAll
  - [X] NeighborsOf
@@ -114,6 +115,15 @@ Suggestions are highly desired!
 
 #### 2.3 NeighborsOf
 `neighbors_of(x, y, id)` counts how many blocks of type `id` are touching the block at `(x|y)` and returns the result. To count how many blocks any type _but_ `id` are neighbors, one would calculate `8 - neighbors_of(x, y, id)`.
+
+#### 2.4 Raycast
+`raycast(x, y, dir, ignored)` iterates over every block in direction `dir` and checks if its type is in the `ignored` list. If it is not, return the blocks position.  
+The parameters are:
+ - `x`, `y`: Position where to start the raycast.
+ - `dir`: -1, 1 for left and right, -2, 2 for up and down
+ - `ignored`: An array of blocks which are ignored when iterating over blocks
+
+To, for example, cast a ray downwards to check where the floor begins one would call `raycast(x, 0, 2, [blocks.air]);`.
 
 ### 3. Performance
 Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms (obviously excluding the native ones) need to be interpreted by the Javascript engine. A goal for later versions is to support as many general algorithms with a native implementation as possible to speed things up without losing control and flexibility.  

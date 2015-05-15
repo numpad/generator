@@ -4,11 +4,13 @@
 #include <stdlib.h>
 #include "lib/duktape.h"
 
+/* linked list of points */
 struct point {
 	int x, y;
 	struct point *next;
 };
 
+/* create a new point */
 struct point *point_new(const int x, const int y) {
 	struct point *p = malloc(sizeof(struct point));
 	p->x = x;
@@ -18,6 +20,7 @@ struct point *point_new(const int x, const int y) {
 	return p;
 }
 
+/* delete a point and all points linked to it */
 void point_delete(struct point *p) {
 	if (p->next != NULL)
 		point_delete(p->next);
@@ -25,7 +28,9 @@ void point_delete(struct point *p) {
 	free(p);
 }
 
+/* puts a point on the end of a linked list */
 void point_append(struct point *p, const int x, const int y) {
+	/* TODO: pretty naive approach, needs to go to every point only to append one point. maybe just put it in front of it? */
 	struct point *it = p;
 	while (it->next != NULL) {
 		it = it->next;
@@ -80,6 +85,75 @@ int algo_neighbors_of(int *js_level, const int w, const int h, const int xp, con
 		}
 	}
 	return counter;
+}
+
+/* returns distance to block in dir */
+int algo_distance(int *js_level, const int w, const int h, const int x, const int y, const int dir, const int *ignored_ids, const int ignored_ids_len) {
+	int distance = 0;
+
+	if (dir == -2) {
+		for (int i = y; i >= 0; --i) {
+			const int id = js_level[x + i * w];
+			char in_ignored = 0;
+			for (int j = 0; j < ignored_ids_len; ++j) {
+				if (ignored_ids[j] == id) {
+					in_ignored = 1;
+					break;
+				}
+			}
+			if (!in_ignored)
+				return distance;
+
+			++distance;
+		}
+	} else if (dir == 1) {
+		for (int i = x; i < w; ++i) {
+			const int id = js_level[i + y * w];
+			char in_ignored = 0;
+			for (int j = 0; j < ignored_ids_len; ++j) {
+				if (ignored_ids[j] == id) {
+					in_ignored = 1;
+					break;
+				}
+			}
+			if (!in_ignored)
+				return distance;
+			
+			++distance;
+		}
+	} else if (dir == 2) {
+		for (int i = y; i < h; ++i) {
+			const int id = js_level[x + i * w];
+			char in_ignored = 0;
+			for (int j = 0; j < ignored_ids_len; ++j) {
+				if (ignored_ids[j] == id) {
+					in_ignored = 1;
+					break;
+				}
+			}
+			if (!in_ignored)
+				return distance;
+			
+			++distance;
+		}
+	} else if (dir == -1) {		
+		for (int i = x; i >= 0; --i) {
+			const int id = js_level[i + y * w];
+			char in_ignored = 0;
+			for (int j = 0; j < ignored_ids_len; ++j) {
+				if (ignored_ids[j] == id) {
+					in_ignored = 1;
+					break;
+				}
+			}
+			if (!in_ignored)
+				return distance;
+			
+			++distance;
+		}
+	}
+
+	return distance;
 }
 
 /* pushes an array of points on the js stack */
