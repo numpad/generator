@@ -8,6 +8,7 @@ Building on Linux:
  1. `git clone https://github.com/numpad/generator.git`
  2. `cd generator`
  3. `make`
+ 4. `make install` (may require root privileges)
 
 Building on Mac OSX:
  1. `git clone https://github.com/numpad/generator.git`
@@ -15,11 +16,16 @@ Building on Mac OSX:
  3. `make CC=clang`
 
 Building on Windows:
- 1. [Download and Install MinGW](http://www.mingw.org/) or any C compiler
+ 1. [Download and Install MinGW](http://www.mingw.org/)
  3. Add MinGW to your PATH if necessary
  4. [Download the repo as zip](https://github.com/numpad/generator/archive/master.zip)
  5. `cd generator-master`
  6. `make`
+
+**Note**:
+ - Building on Windows does not specifically require MinGW. Any C compiler (supporting C99) should work. _However_ since MinGW installs the GCC, there are nearly no problems when using the Makefile.
+ - Building on OSX has not been tested and is pure speculation.
+ - `make install` will currently only install `generate` to `/usr/local/bin`. That means files in `base/` are not always available and scripts loading e.g. `base/blocks.js` will probably need a copy of it in the cwd.
 
 ## Documentation
 Plain map generation is very simple using the map generator, you will
