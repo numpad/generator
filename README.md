@@ -1,18 +1,6 @@
 # Map Generator
 A simple Javascript-based Map Generator for King Arthur's Gold.
 
-## Libraries
-To keep things simple this program uses as little libraries as possible.
-The only libraries used are:
- - [LodePNG](http://lodev.org/lodepng) for encoding PNGs.
- - [Duktape](http://duktape.org) as Javascript engine.
-
-## Copyright
-Copyright (c) 2015 Christian Schäl
-
-## License
-See LICENSE.md
-
 ## Installation
 Currently there are no binaries available, to use the Map Generator you will have to build it from source. This requires you to have a C compiler supporting C99. In development gcc 4.9.2 was used but every other compiler should work as well.  
 
@@ -45,6 +33,7 @@ Additional arguments are:
  - `-h, --height <int>` to specify the map-height
  - `-o, --output <name>` to name the exported PNG
  - `-c, --count <int>` to generate multiple maps
+ - `-n, --no-export` to disable PNG export, useful for testing
 
 If you, for example, created a generator script called "gen_mountains.js" and want two 140x70 sized maps called "mymap", you would run `./generate gen_mountains.js -w 140 -h 70 -o mymap -c 2`. Now you have two PNG files `mymap_0.png` and `mymap_1.png` which can be used in King Arthur's Gold.
 
@@ -141,6 +130,16 @@ The parameters are:
 To, for example, cast a ray downwards to check where the floor begins one would call `raycast(x, 0, 2, [blocks.air]);`.
 
 ### 3. Performance
-Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms (obviously excluding the native ones) need to be interpreted by the Javascript engine. A goal for later versions is to support as many general algorithms with a native implementation as possible to speed things up without losing control and flexibility.  
-An example for a (performance-wise) bad script is `generators/not_so_flatland.js`, it iterates over every block pretty often, uses the slow iterative floodfill algorithm with way to many, slow `contains(array, point)` calls.
+Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms (obviously excluding the native ones) need to be interpreted by the Javascript engine. A goal for later versions is to support as many general algorithms with a native implementation as possible to speed things up without losing control and flexibility.
 
+## Libraries
+To keep things simple this program uses as little libraries as possible.
+The only libraries used are:
+ - [LodePNG](http://lodev.org/lodepng) for encoding PNGs.
+ - [Duktape](http://duktape.org) as Javascript engine.
+
+## Copyright
+Copyright (c) 2015 Christian Schäl
+
+## License
+See LICENSE.md
