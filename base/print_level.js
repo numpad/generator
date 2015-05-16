@@ -32,8 +32,10 @@ for (var y = 0; y < Height; ++y) {
 			line += "X";
 			break;
 		case blocks.water:
-		case blocks.water_dirt:
 			line += "\x1b[34m~\x1b[0m";
+			break;
+		case blocks.water_dirt:
+			line += "\x1b[34;2m~\x1b[0m";
 			break;
 		case blocks.tree:
 			line += "\x1b[32;2m!\x1b[0m";
