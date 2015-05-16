@@ -384,7 +384,10 @@ int main(int argc, char *argv[]) {
 	
 	/* try to load some basic functionality */
 	if (duk_peval_file(ctx, "base/base.js") != 0) {
-		printf("Failed to load 'base/base.js': %s\n", duk_safe_to_string(ctx, -1));
+		//printf("Failed to load 'base/base.js': %s\n", duk_safe_to_string(ctx, -1));
+		
+		/* When failing to load base/base.js, se simple, default module loader. */
+		duk_eval_string_noresult(ctx, "Duktape.modSearch = function(id) { return read(id); };");
 	}
 	duk_pop(ctx);
 	
