@@ -11,3 +11,9 @@ all:
 
 clean:
 	rm -f ./${ENTRY}
+
+install:
+	cp ./${ENTRY} /usr/local/bin/${ENTRY}
+
+uninstall:
+	rm -f /usr/local/bin/${ENTRY}
