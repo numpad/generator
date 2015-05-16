@@ -53,8 +53,10 @@ for (var y = 0; y < Height; ++y) {
 			line += "\x1b[35m&\x1b[0m"
 			break;
 		case blocks.door_stone:
-		case blocks.door_wood:
 			line += "|";
+			break;
+		case blocks.door_wood:
+			line += "\x1b[33;2m|\x1b[0m";
 			break;
 		case blocks.wood:
 			line += "\x1b[33;2m=\x1b[0m";
