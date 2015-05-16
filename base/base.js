@@ -14,3 +14,4 @@ Duktape.modSearch = function(id, require, exports, module) {
 	/* native function 'js_read_file' */
 	return read(id);
 };
+
