@@ -10,4 +10,4 @@ all:
 	${CC} ${CSTD} ${ENTRY}.c ${CSRC} ${CLIB} ${CWARN} -o${ENTRY}
 
 clean:
-	rm -f ./build
+	rm -f ./${ENTRY}
