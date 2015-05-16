@@ -130,8 +130,7 @@ The parameters are:
 To, for example, cast a ray downwards to check where the floor begins one would call `raycast(x, 0, 2, [blocks.air]);`.
 
 ### 3. Performance
-Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms (obviously excluding the native ones) need to be interpreted by the Javascript engine. A goal for later versions is to support as many general algorithms with a native implementation as possible to speed things up without losing control and flexibility.  
-An example for a (performance-wise) bad script is `generators/not_so_flatland.js`, it iterates over every block pretty often, uses the slow iterative floodfill algorithm with way to many, slow `contains(array, point)` calls.
+Performance may vary drastically between different scripts and map dimensions. At this point, the map generator scores a pretty good performance, however more complex scripts are often slowing the process down quite much since all algorithms (obviously excluding the native ones) need to be interpreted by the Javascript engine. A goal for later versions is to support as many general algorithms with a native implementation as possible to speed things up without losing control and flexibility.
 
 ## Libraries
 To keep things simple this program uses as little libraries as possible.
