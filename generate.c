@@ -28,6 +28,9 @@ int js_level_width  = 120,
 	js_level_height = 70;
 /* prints how to use the program */
 void print_usage(const char *arg0) {
+	puts("Version:");
+	puts("  v" VERSION);
+	puts("");
 	puts("Usage:");
   printf(" %s <filename.js> [flags ..]\n", arg0);
 	puts("");
@@ -36,18 +39,17 @@ void print_usage(const char *arg0) {
 	puts("  -h, --height <int>  : Set level height");
 	puts("  -c, --count <int>   : How many maps to generate");
 	puts("  -o, --output <file> : Export image named <file>");
+	puts("  -n, --no-export     : Don't export the map");
 	puts("");
 	puts(" -- Functions --");
 	puts("  This map generator uses the Duktape (duktape.org)");
 	puts("  Javascript engine which follows the EcmaScript 5/");
 	puts("  5.1 specification.");
 	puts("  Additional functions are listed in README.md");
-	puts("");
-	puts("Version:");
-	puts("  v" VERSION);
 #ifdef USE_PROMPT
 	puts("  Compiled with USE_PROMPT flag");
 #endif
+	puts("");
 }
 
 /* read a file and return its content */
@@ -380,7 +382,6 @@ int main(int argc, char *argv[]) {
 	duk_put_prop_string(ctx, -2, "raycast");
 	/* pop global object */
 	duk_pop(ctx);
-
 	
 	/* try to load some basic functionality */
 	if (duk_peval_file(ctx, "base/base.js") != 0) {
@@ -399,6 +400,7 @@ int main(int argc, char *argv[]) {
 		/* where to save the png */
 		char *export_file = "generated_map";
 		int generate_num = 1;
+		int save_png_disabled = 0;
 
 		/* parse command line flags */
 		for (int i = 0; i < argc; ++i) {
@@ -414,6 +416,8 @@ int main(int argc, char *argv[]) {
 			} else if (!strcmp(argv[i], "-c") || !strcmp(argv[i], "--count")) {
 				if (i + 1 < argc)
 					generate_num = atoi(argv[i + 1]);
+			} else if (!strcmp(argv[i], "-n") || !strcmp(argv[i], "--no-export")) {
+				save_png_disabled = 1;
 			}
 		}
 		
@@ -445,7 +449,8 @@ int main(int argc, char *argv[]) {
 				sprintf(export_file_num, "%s.png", export_file);
 			}
 			/* export the level as png */
-			export_level(export_file_num);
+			if (!save_png_disabled)
+				export_level(export_file_num);
 		}
 
 		/* free all memory */ 
