@@ -132,5 +132,5 @@ for (var i = 0; i < potentialstone.length; ++i) {
 }
 
 /* Prints the level */
-load_file("base/print_level.js");
+//load_file("base/print_level.js");
 
