@@ -82,7 +82,6 @@ generate_floor(3, 16);
 
 var floor = findall(blocks.dirt);
 for (var i = 0; i < floor.length; ++i) {
-	//set(floor[i][0], floor[i][1] - 1, blocks.grass);
 	connect(floor[i][0], floor[i][1], floor[i][0], Height, blocks.dirt);
 }
 
@@ -109,6 +108,27 @@ for (var i = 0; i < floor.length; ++i) {
 	
 	if (get(x, y - 1) === blocks.air)
 		set(x, y - 1, blocks.grass);
+}
+
+var pos = raycast(Width / 2, 0, 2, [blocks.air]);
+if (get(pos[0], pos[1]) == blocks.water) {
+	connect(pos[0] - 6, pos[1] - 1, pos[0] + 6, pos[1] - 1, blocks.grass);
+	for (var i = 0; i < 6; ++i) {
+		connect(pos[0] - (6 - i), pos[1] + i, pos[0] + (6 - i), pos[1] + i, blocks.dirt);
+		
+	}
+}
+
+var grass = findall(blocks.grass);
+for (var i = 0; i < grass.length; ++i) {
+	if (Math.random() < 0.33)
+		set(grass[i][0], grass[i][1], blocks.tree);
+}
+
+var potentialstone = findall(blocks.dirt);
+for (var i = 0; i < potentialstone.length; ++i) {
+	if (Math.random() < 0.3)
+		set(potentialstone[i][0], potentialstone[i][1], blocks.stone);
 }
 
 /* Prints the level */
