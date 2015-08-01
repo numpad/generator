@@ -53,7 +53,7 @@ The Javascript environment for scripts comes with a ECMAScript 5/5.1 compilanten
  - `fill(id)`, which fills the whole map with `id`
  - `findall(id)`, which returns an array filled with the coordinates of every block of type `id`
  - `neighbors_of(x, y, id)`, which returns how many neighbors of type `id` are touching block (x, y)
- - `raycast(x, y, dir, ignored`, which returns the position of the block the ray collides with
+ - `raycast(x, y, dir, ignored)`, which returns the position of the block the ray collides with
  - `Width`, how many blocks wide the map is
  - `Height`, how many blocks high the map is
 
